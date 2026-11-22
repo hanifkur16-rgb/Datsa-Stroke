@@ -75,6 +75,39 @@ CONFUSION_COUNTS = {
     "true_positive": 39,
 }
 
+# Label tampilan (bahasa Indonesia baku) -> nilai asli untuk model.
+# Nilai yang dikirim ke model tetap sama seperti data pelatihan.
+LABEL_GENDER = {
+    "Female": "Perempuan",
+    "Male": "Laki-laki",
+    "Other": "Lainnya",
+}
+
+LABEL_YA_TIDAK = {
+    "Yes": "Ya",
+    "No": "Tidak",
+}
+
+LABEL_PEKERJAAN = {
+    "Private": "Swasta",
+    "Self-employed": "Wiraswasta",
+    "Govt_job": "Pegawai Pemerintah",
+    "children": "Anak-anak",
+    "Never_worked": "Belum Pernah Bekerja",
+}
+
+LABEL_TEMPAT_TINGGAL = {
+    "Urban": "Perkotaan",
+    "Rural": "Perdesaan",
+}
+
+LABEL_MEROKOK = {
+    "Unknown": "Tidak Diketahui",
+    "never smoked": "Tidak Pernah Merokok",
+    "formerly smoked": "Pernah Merokok (Sudah Berhenti)",
+    "smokes": "Merokok",
+}
+
 
 # ============================================================
 # CUSTOM STYLING
@@ -603,8 +636,9 @@ elif page == "Prediksi":
 
             gender = st.selectbox(
                 "Jenis kelamin",
-                ["Female", "Male", "Other"],
+                list(LABEL_GENDER.keys()),
                 index=0,
+                format_func=lambda x: LABEL_GENDER[x],
                 help="Kategori sesuai dataset pelatihan.",
             )
 
@@ -617,14 +651,23 @@ elif page == "Prediksi":
                 help="Rentang usia dataset: 0,08–82 tahun.",
             )
 
-            ever_married = st.selectbox("Pernah menikah?", ["Yes", "No"])
+            ever_married = st.selectbox(
+                "Pernah menikah?",
+                list(LABEL_YA_TIDAK.keys()),
+                format_func=lambda x: LABEL_YA_TIDAK[x],
+            )
 
             work_type = st.selectbox(
                 "Jenis pekerjaan",
-                ["Private", "Self-employed", "Govt_job", "children", "Never_worked"],
+                list(LABEL_PEKERJAAN.keys()),
+                format_func=lambda x: LABEL_PEKERJAAN[x],
             )
 
-            residence_type = st.selectbox("Tipe tempat tinggal", ["Urban", "Rural"])
+            residence_type = st.selectbox(
+                "Tipe tempat tinggal",
+                list(LABEL_TEMPAT_TINGGAL.keys()),
+                format_func=lambda x: LABEL_TEMPAT_TINGGAL[x],
+            )
 
         with col2:
 
@@ -633,7 +676,7 @@ elif page == "Prediksi":
             heart_disease_label = st.selectbox("Memiliki penyakit jantung?", ["Tidak", "Ya"])
 
             glucose = st.number_input(
-                "Average glucose level",
+                "Rata-rata kadar glukosa (mg/dL)",
                 min_value=1.0,
                 max_value=600.0,
                 value=91.9,
@@ -642,7 +685,7 @@ elif page == "Prediksi":
             )
 
             bmi = st.number_input(
-                "BMI",
+                "Indeks Massa Tubuh (IMT/BMI)",
                 min_value=1.0,
                 max_value=150.0,
                 value=28.1,
@@ -652,7 +695,8 @@ elif page == "Prediksi":
 
             smoking_status = st.selectbox(
                 "Status merokok",
-                ["Unknown", "never smoked", "formerly smoked", "smokes"],
+                list(LABEL_MEROKOK.keys()),
+                format_func=lambda x: LABEL_MEROKOK[x],
             )
 
         st.markdown("---")
