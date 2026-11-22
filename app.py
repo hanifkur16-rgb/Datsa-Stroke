@@ -551,7 +551,11 @@ if page == "Dashboard":
         render_metric_card("MODEL FINAL", "Logistic", "Logistic Regression")
 
     with c4:
-        render_metric_card("THRESHOLD", f"{threshold:.4f}", "Ambang klasifikasi")
+        render_metric_card(
+            "DATA UJI",
+            f"{sum(CONFUSION_COUNTS.values()):,}",
+            "Observasi pada test set",
+        )
 
     st.write("")
 
@@ -567,14 +571,13 @@ if page == "Dashboard":
                 <p style="color:#31545B;margin-top:0;">
                     Aplikasi ini menerima karakteristik demografis
                     dan kondisi kesehatan sebagai input, kemudian
-                    menjalankannya melalui pipeline preprocessing
-                    dan model Logistic Regression.
+                    mengklasifikasikannya menggunakan model
+                    Logistic Regression.
                 </p>
                 <p style="color:#31545B;margin-bottom:0;">
-                    Pipeline yang tersimpan mencakup imputasi median
-                    untuk fitur numerik, imputasi modus untuk fitur
-                    kategorikal, One-Hot Encoding, serta StandardScaler
-                    pada fitur numerik.
+                    Buka menu <b>Prediksi</b> untuk mencoba model, atau
+                    menu <b>Tentang Model</b> untuk melihat detail
+                    metodologi dan evaluasi lengkap.
                 </p>
             </div>
             """
@@ -582,25 +585,19 @@ if page == "Dashboard":
 
     with right:
 
-        section_title("Metrik pada Data Testing")
+        section_title("Metrik Utama (Data Uji)")
 
         m1, m2 = st.columns(2)
 
         with m1:
-            st.metric("Accuracy", TEST_METRICS["Accuracy"])
             st.metric("Recall", TEST_METRICS["Recall"])
-            st.metric("ROC-AUC", TEST_METRICS["ROC-AUC"])
 
         with m2:
-            st.metric("Precision", TEST_METRICS["Precision"])
-            st.metric("F1-Score", TEST_METRICS["F1-Score"])
-            st.metric("PR-AUC", TEST_METRICS["PR-AUC"])
+            st.metric("ROC-AUC", TEST_METRICS["ROC-AUC"])
 
     st.info(
-        "Interpretasi: pada data testing proyek, Recall kelas stroke "
-        "sebesar 78% (39 dari 50 observasi stroke terdeteksi). "
-        "Precision sebesar 21,08% menunjukkan masih terdapat "
-        "false positive yang cukup banyak."
+        "Metrik lengkap, confusion matrix, dan catatan interpretasi "
+        "tersedia di menu Tentang Model."
     )
 
     md_html(
@@ -844,6 +841,15 @@ elif page == "Tentang Model":
 
     with info3:
         st.metric("Scikit-learn", sklearn.__version__)
+
+    section_title("Pipeline Preprocessing")
+
+    st.write(
+        "Pipeline yang tersimpan bersama model mencakup imputasi "
+        "median untuk fitur numerik, imputasi modus untuk fitur "
+        "kategorikal, One-Hot Encoding untuk fitur kategorikal, "
+        "serta StandardScaler untuk fitur numerik."
+    )
 
     section_title("Variabel yang Digunakan")
 
