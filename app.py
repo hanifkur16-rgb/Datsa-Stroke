@@ -1,3 +1,4 @@
+
 import streamlit as st
 import pandas as pd
 import joblib
@@ -23,258 +24,22 @@ st.set_page_config(
     layout="wide"
 )
 
-
-# ==========================================
-# CUSTOM DESIGN - FIXED FONT CONTRAST
-# ==========================================
-
+# Custom design
 st.markdown("""
 <style>
-
-/* ======================================
-   MAIN BACKGROUND
-====================================== */
-
-:root {
-    color-scheme: light;
+.stApp {
+    background-color: #F4F8F8;
 }
-
-.stApp,
-[data-testid="stAppViewContainer"] {
-    background-color: #F4F8F8 !important;
-    color: #183D46 !important;
+h1, h2, h3 {
+    color: #164E50;
 }
-
-[data-testid="stAppViewContainer"] .main {
-    color: #183D46 !important;
-}
-
-
-/* ======================================
-   MAIN TEXT
-====================================== */
-
-[data-testid="stAppViewContainer"] .main p,
-[data-testid="stAppViewContainer"] .main li,
-[data-testid="stAppViewContainer"] .main span,
-[data-testid="stAppViewContainer"] .main label,
-[data-testid="stAppViewContainer"] .main
-[data-testid="stMarkdownContainer"] {
-    color: #294D55 !important;
-    opacity: 1 !important;
-}
-
-
-/* ======================================
-   HEADINGS
-====================================== */
-
-.stApp h1,
-.stApp h2,
-.stApp h3,
-.stApp h4,
-.stApp h5,
-.stApp h6 {
-    color: #164E50 !important;
-    opacity: 1 !important;
-    font-weight: 700 !important;
-}
-
-
-/* ======================================
-   WIDGET LABELS
-   Gender, Age, BMI, etc.
-====================================== */
-
-[data-testid="stWidgetLabel"],
-[data-testid="stWidgetLabel"] *,
-[data-testid="stWidgetLabel"] p,
-.stSelectbox label,
-.stNumberInput label,
-.stSelectbox label p,
-.stNumberInput label p {
-    color: #183D46 !important;
-    opacity: 1 !important;
-    font-weight: 600 !important;
-}
-
-
-/* ======================================
-   SELECTBOX
-====================================== */
-
-[data-baseweb="select"] > div {
-    background-color: #FFFFFF !important;
-    border: 1px solid #C6D9D7 !important;
-    border-radius: 10px !important;
-}
-
-[data-baseweb="select"] * {
-    color: #183D46 !important;
-}
-
-[role="listbox"],
-[role="option"] {
-    background-color: #FFFFFF !important;
-    color: #183D46 !important;
-}
-
-
-/* ======================================
-   NUMBER INPUT
-====================================== */
-
-[data-testid="stNumberInput"] input {
-    background-color: #FFFFFF !important;
-    color: #183D46 !important;
-    border: 1px solid #C6D9D7 !important;
-    -webkit-text-fill-color: #183D46 !important;
-}
-
-[data-testid="stNumberInput"] button {
-    color: #183D46 !important;
-    background-color: #F0F6F5 !important;
-}
-
-
-/* ======================================
-   METRIC CARDS
-   Accuracy, Precision, Recall, etc.
-====================================== */
-
-[data-testid="stMetric"] {
-    background-color: #FFFFFF !important;
-    border: 1px solid #DCE9E7 !important;
-    border-radius: 14px !important;
-    padding: 15px !important;
-}
-
-[data-testid="stMetricLabel"],
-[data-testid="stMetricLabel"] *,
-[data-testid="stMetricLabel"] p {
-    color: #607B80 !important;
-    opacity: 1 !important;
-}
-
-[data-testid="stMetricValue"],
-[data-testid="stMetricValue"] *,
-[data-testid="stMetricValue"] div {
-    color: #164E50 !important;
-    opacity: 1 !important;
-    font-weight: 700 !important;
-}
-
-[data-testid="stMetricDelta"],
-[data-testid="stMetricDelta"] * {
-    color: #187C75 !important;
-}
-
-
-/* ======================================
-   DATAFRAME / TABLE
-====================================== */
-
-[data-testid="stDataFrame"] {
-    color: #183D46 !important;
-}
-
-[data-testid="stDataFrame"] * {
-    color: #183D46 !important;
-}
-
-
-/* ======================================
-   ALERT BOX
-====================================== */
-
-[data-testid="stAlert"] {
-    border-radius: 10px !important;
-}
-
-[data-testid="stAlert"] p,
-[data-testid="stAlert"] span {
-    color: #234D57 !important;
-    opacity: 1 !important;
-}
-
-
-/* ======================================
-   BUTTON
-====================================== */
-
-div.stButton > button,
-div[data-testid="stFormSubmitButton"] > button {
-    background-color: #187C75 !important;
-    color: #FFFFFF !important;
-    border: none !important;
-    border-radius: 10px !important;
-    height: 45px !important;
-    font-weight: 700 !important;
-}
-
-div.stButton > button *,
-div[data-testid="stFormSubmitButton"] > button * {
-    color: #FFFFFF !important;
-}
-
-div.stButton > button:hover,
-div[data-testid="stFormSubmitButton"] > button:hover {
-    background-color: #12665F !important;
-    color: #FFFFFF !important;
-}
-
-
-/* ======================================
-   SIDEBAR
-   Keep dark green design
-====================================== */
-
-[data-testid="stSidebar"] {
-    background-color: #123B43 !important;
-}
-
-[data-testid="stSidebar"] * {
-    color: #F2FAF8 !important;
-}
-
-[data-testid="stSidebar"] [data-testid="stRadio"] label {
-    background-color: rgba(255,255,255,0.07);
+div.stButton > button {
+    background-color: #187C75;
+    color: white;
     border-radius: 10px;
-    padding: 8px;
+    height: 45px;
+    font-weight: bold;
 }
-
-
-/* ======================================
-   CAPTION
-====================================== */
-
-[data-testid="stCaptionContainer"],
-[data-testid="stCaptionContainer"] * {
-    color: #607B80 !important;
-}
-
-
-/* ======================================
-   GENERAL IMPROVEMENTS
-====================================== */
-
-input,
-textarea {
-    color: #183D46 !important;
-}
-
-hr {
-    border-color: #DCE9E7 !important;
-}
-
-#MainMenu {
-    visibility: hidden;
-}
-
-footer {
-    visibility: hidden;
-}
-
 </style>
 """, unsafe_allow_html=True)
 
