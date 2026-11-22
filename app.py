@@ -8,6 +8,25 @@ import sklearn
 
 
 # ============================================================
+# HELPER: HAPUS INDENTASI HTML
+# Markdown menganggap baris berindentasi >= 4 spasi sebagai
+# code block. Fungsi ini menghapus indentasi & baris kosong
+# agar HTML dirender dengan benar.
+# ============================================================
+
+def html(text: str) -> str:
+    return "\n".join(
+        line.strip()
+        for line in text.strip().splitlines()
+        if line.strip()
+    )
+
+
+def md_html(text: str):
+    st.markdown(html(text), unsafe_allow_html=True)
+
+
+# ============================================================
 # PAGE CONFIGURATION
 # ============================================================
 
@@ -58,10 +77,10 @@ CONFUSION_COUNTS = {
 
 
 # ============================================================
-# CUSTOM STYLING - HIGH CONTRAST FIX
+# CUSTOM STYLING
 # ============================================================
 
-st.markdown(
+md_html(
     """
     <style>
 
@@ -75,24 +94,10 @@ st.markdown(
         font-family: 'DM Sans', sans-serif;
     }
 
-    /* =================================
-       MAIN BACKGROUND
-    ================================= */
-
     .stApp {
         background:
-            radial-gradient(
-                circle at 85% 2%,
-                rgba(30, 145, 130, 0.10),
-                transparent 28%
-            ),
-            linear-gradient(
-                180deg,
-                #F5FAF9 0%,
-                #F7F9FC 55%,
-                #F4F7FA 100%
-            ) !important;
-
+            radial-gradient(circle at 85% 2%, rgba(30, 145, 130, 0.10), transparent 28%),
+            linear-gradient(180deg, #F5FAF9 0%, #F7F9FC 55%, #F4F7FA 100%) !important;
         color: #183D46 !important;
     }
 
@@ -101,10 +106,6 @@ st.markdown(
     [data-testid="stMainBlockContainer"] {
         color: #183D46 !important;
     }
-
-    /* =================================
-       GENERAL TEXT
-    ================================= */
 
     [data-testid="stMain"] .stMarkdown p,
     [data-testid="stMain"] .stMarkdown li {
@@ -118,10 +119,6 @@ st.markdown(
         color: #183D46 !important;
     }
 
-    /* =================================
-       INPUT LABELS - FIX WHITE TEXT
-    ================================= */
-
     [data-testid="stMain"] [data-testid="stWidgetLabel"],
     [data-testid="stMain"] [data-testid="stWidgetLabel"] *,
     [data-testid="stMain"] [data-testid="stWidgetLabel"] p,
@@ -132,10 +129,6 @@ st.markdown(
         font-weight: 600 !important;
     }
 
-    /* =================================
-       SELECTBOX INPUT
-    ================================= */
-
     div[data-baseweb="select"] > div {
         background-color: #262832 !important;
         border: 1px solid #383B46 !important;
@@ -145,8 +138,6 @@ st.markdown(
     div[data-baseweb="select"] > div * {
         color: #FFFFFF !important;
     }
-
-    /* DROPDOWN MENU */
 
     [data-baseweb="popover"],
     [data-baseweb="menu"],
@@ -159,10 +150,6 @@ st.markdown(
         color: #183D46 !important;
     }
 
-    /* =================================
-       NUMBER INPUT
-    ================================= */
-
     div[data-testid="stNumberInput"] input {
         background-color: #262832 !important;
         color: #FFFFFF !important;
@@ -174,16 +161,8 @@ st.markdown(
         color: #FFFFFF !important;
     }
 
-    /* =================================
-       SIDEBAR
-    ================================= */
-
     [data-testid="stSidebar"] {
-        background: linear-gradient(
-            180deg,
-            #123B43 0%,
-            #102F3B 100%
-        ) !important;
+        background: linear-gradient(180deg, #123B43 0%, #102F3B 100%) !important;
     }
 
     [data-testid="stSidebar"] * {
@@ -197,23 +176,12 @@ st.markdown(
         margin-bottom: 0.25rem;
     }
 
-    /* =================================
-       HERO HEADER
-    ================================= */
-
     .hero {
-        background: linear-gradient(
-            115deg,
-            #123B43 0%,
-            #17645F 58%,
-            #25877B 100%
-        );
-
+        background: linear-gradient(115deg, #123B43 0%, #17645F 58%, #25877B 100%);
         border-radius: 22px;
         padding: 1.8rem 2rem;
         color: #FFFFFF !important;
         margin-bottom: 1.25rem;
-
         box-shadow: 0 14px 35px rgba(18, 59, 67, 0.13);
     }
 
@@ -239,10 +207,6 @@ st.markdown(
         color: #B8E5D9 !important;
     }
 
-    /* =================================
-       SECTION TITLES
-    ================================= */
-
     .section-title {
         font-family: 'Manrope', sans-serif;
         color: #183D46 !important;
@@ -251,18 +215,12 @@ st.markdown(
         margin: 0.4rem 0 0.75rem 0;
     }
 
-    /* =================================
-       DASHBOARD CARDS
-    ================================= */
-
     .soft-card {
         background: #FFFFFF !important;
         border: 1px solid #DCE9E7;
         border-radius: 17px;
         padding: 1rem 1.15rem;
-
         box-shadow: 0 7px 22px rgba(20, 55, 60, 0.045);
-
         min-height: 112px;
         color: #183D46 !important;
     }
@@ -288,19 +246,12 @@ st.markdown(
         margin-top: 0.35rem;
     }
 
-    /* =================================
-       STREAMLIT METRICS
-       DASHBOARD + ABOUT MODEL
-    ================================= */
-
     [data-testid="stMetric"] {
         background: #FFFFFF !important;
         border: 1px solid #DCE9E7 !important;
         border-radius: 15px;
         padding: 0.8rem 1rem;
-
         box-shadow: 0 5px 18px rgba(20, 55, 60, 0.035);
-
         color: #183D46 !important;
     }
 
@@ -325,16 +276,11 @@ st.markdown(
         color: #187A68 !important;
     }
 
-    /* =================================
-       PREDICTION RESULT
-    ================================= */
-
     .result-card {
         background: #FFFFFF !important;
         border: 1px solid #DFEAE8;
         border-radius: 18px;
         padding: 1.25rem 1.35rem;
-
         box-shadow: 0 8px 25px rgba(20, 55, 60, 0.06);
     }
 
@@ -351,10 +297,6 @@ st.markdown(
         font-size: 0.82rem;
     }
 
-    /* =================================
-       ALERT BOX
-    ================================= */
-
     [data-testid="stAlert"] {
         border-radius: 12px;
     }
@@ -365,18 +307,9 @@ st.markdown(
         color: #183D46 !important;
     }
 
-    /* =================================
-       BUTTON
-    ================================= */
-
     div.stButton > button,
     div[data-testid="stFormSubmitButton"] > button {
-        background: linear-gradient(
-            90deg,
-            #17645F 0%,
-            #238879 100%
-        ) !important;
-
+        background: linear-gradient(90deg, #17645F 0%, #238879 100%) !important;
         color: #FFFFFF !important;
         border: 0;
         border-radius: 11px;
@@ -387,28 +320,15 @@ st.markdown(
 
     div.stButton > button:hover,
     div[data-testid="stFormSubmitButton"] > button:hover {
-        background: linear-gradient(
-            90deg,
-            #124E4B 0%,
-            #176E63 100%
-        ) !important;
-
+        background: linear-gradient(90deg, #124E4B 0%, #176E63 100%) !important;
         color: #FFFFFF !important;
         border: 0;
     }
-
-    /* =================================
-       DATA TABLE
-    ================================= */
 
     [data-testid="stDataFrame"] {
         border: 1px solid #DCE9E7;
         border-radius: 10px;
     }
-
-    /* =================================
-       FOOTER
-    ================================= */
 
     .footer-note {
         color: #627D84 !important;
@@ -427,8 +347,7 @@ st.markdown(
     }
 
     </style>
-    """,
-    unsafe_allow_html=True,
+    """
 )
 
 
@@ -464,12 +383,7 @@ except Exception as exc:
     st.stop()
 
 
-required_keys = {
-    "model",
-    "threshold",
-    "model_name",
-    "features"
-}
+required_keys = {"model", "threshold", "model_name", "features"}
 
 if not required_keys.issubset(model_package.keys()):
     st.error("Struktur file model tidak sesuai.")
@@ -505,31 +419,18 @@ if not hasattr(model, "predict_proba"):
 
 with st.sidebar:
 
-    st.markdown(
+    md_html(
         """
         <div style="padding: 0.5rem 0 1.1rem 0;">
-
             <div style="font-size:2.1rem;">🩺</div>
-
-            <div style="
-                font-family:Manrope,sans-serif;
-                font-size:1.25rem;
-                font-weight:800;
-            ">
-                Stroke<span style="color:#8ED7C4;">
-                Predict</span>
+            <div style="font-family:Manrope,sans-serif;font-size:1.25rem;font-weight:800;">
+                Stroke<span style="color:#8ED7C4;">Predict</span>
             </div>
-
-            <div style="
-                font-size:0.76rem;
-                color:#C4D9D7;
-            ">
+            <div style="font-size:0.76rem;color:#C4D9D7;">
                 Healthcare Machine Learning
             </div>
-
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
     page = st.radio(
@@ -544,17 +445,13 @@ with st.sidebar:
 
     st.markdown("**Stroke Prediction**")
 
-    st.markdown(
+    md_html(
         """
-        <span style="
-            font-size:0.78rem;
-            color:#C4D9D7;
-        ">
+        <span style="font-size:0.78rem;color:#C4D9D7;">
             Model: Logistic Regression<br>
             Dataset: Healthcare Stroke Dataset
         </span>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
     st.markdown("---")
@@ -563,55 +460,35 @@ with st.sidebar:
 
 
 # ============================================================
-# REUSABLE HEADER
+# REUSABLE COMPONENTS
 # ============================================================
 
 def render_hero(eyebrow: str, title: str, description: str):
-
-    st.markdown(
+    md_html(
         f"""
         <div class="hero">
-
-            <div class="eyebrow">
-                {eyebrow}
-            </div>
-
-            <h1>
-                {title}
-            </h1>
-
-            <p>
-                {description}
-            </p>
-
+            <div class="eyebrow">{eyebrow}</div>
+            <h1>{title}</h1>
+            <p>{description}</p>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
 def render_metric_card(label: str, value: str, hint: str):
-
-    st.markdown(
+    md_html(
         f"""
         <div class="soft-card">
-
-            <div class="label">
-                {label}
-            </div>
-
-            <div class="value">
-                {value}
-            </div>
-
-            <div class="hint">
-                {hint}
-            </div>
-
+            <div class="label">{label}</div>
+            <div class="value">{value}</div>
+            <div class="hint">{hint}</div>
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
+
+
+def section_title(text: str):
+    md_html(f'<div class="section-title">{text}</div>')
 
 
 # ============================================================
@@ -627,40 +504,21 @@ if page == "Dashboard":
         "model Logistic Regression yang telah dilatih pada dataset Kaggle.",
     )
 
-    st.markdown(
-        '<div class="section-title">Ringkasan Proyek</div>',
-        unsafe_allow_html=True,
-    )
+    section_title("Ringkasan Proyek")
 
     c1, c2, c3, c4 = st.columns(4)
 
     with c1:
-        render_metric_card(
-            "TOTAL DATASET",
-            "5,110",
-            "Observasi pada dataset"
-        )
+        render_metric_card("TOTAL DATASET", "5,110", "Observasi pada dataset")
 
     with c2:
-        render_metric_card(
-            "FITUR PREDIKTOR",
-            "10",
-            "Variabel input model"
-        )
+        render_metric_card("FITUR PREDIKTOR", "10", "Variabel input model")
 
     with c3:
-        render_metric_card(
-            "MODEL FINAL",
-            "Logistic",
-            "Logistic Regression"
-        )
+        render_metric_card("MODEL FINAL", "Logistic", "Logistic Regression")
 
     with c4:
-        render_metric_card(
-            "THRESHOLD",
-            f"{threshold:.4f}",
-            "Ambang klasifikasi"
-        )
+        render_metric_card("THRESHOLD", f"{threshold:.4f}", "Ambang klasifikasi")
 
     st.write("")
 
@@ -668,40 +526,30 @@ if page == "Dashboard":
 
     with left:
 
-        st.markdown(
-            '<div class="section-title">Tentang Aplikasi</div>',
-            unsafe_allow_html=True,
-        )
+        section_title("Tentang Aplikasi")
 
-        st.markdown(
+        md_html(
             """
             <div class="soft-card">
-
                 <p style="color:#31545B;margin-top:0;">
                     Aplikasi ini menerima karakteristik demografis
                     dan kondisi kesehatan sebagai input, kemudian
                     menjalankannya melalui pipeline preprocessing
                     dan model Logistic Regression.
                 </p>
-
                 <p style="color:#31545B;margin-bottom:0;">
                     Pipeline yang tersimpan mencakup imputasi median
                     untuk fitur numerik, imputasi modus untuk fitur
                     kategorikal, One-Hot Encoding, serta StandardScaler
                     pada fitur numerik.
                 </p>
-
             </div>
-            """,
-            unsafe_allow_html=True,
+            """
         )
 
     with right:
 
-        st.markdown(
-            '<div class="section-title">Metrik pada Data Testing</div>',
-            unsafe_allow_html=True,
-        )
+        section_title("Metrik pada Data Testing")
 
         m1, m2 = st.columns(2)
 
@@ -722,14 +570,13 @@ if page == "Dashboard":
         "false positive yang cukup banyak."
     )
 
-    st.markdown(
+    md_html(
         """
         <div class="footer-note">
             Angka evaluasi berasal dari pengujian model pada test set
             di notebook proyek. Hasil ini bukan validasi klinis.
         </div>
-        """,
-        unsafe_allow_html=True,
+        """
     )
 
 
@@ -746,10 +593,7 @@ elif page == "Prediksi":
         "klasifikasi menggunakan model yang telah dilatih.",
     )
 
-    st.markdown(
-        '<div class="section-title">Informasi Demografis</div>',
-        unsafe_allow_html=True,
-    )
+    section_title("Informasi Demografis")
 
     with st.form("stroke_prediction_form"):
 
@@ -773,38 +617,20 @@ elif page == "Prediksi":
                 help="Rentang usia dataset: 0,08–82 tahun.",
             )
 
-            ever_married = st.selectbox(
-                "Pernah menikah?",
-                ["Yes", "No"],
-            )
+            ever_married = st.selectbox("Pernah menikah?", ["Yes", "No"])
 
             work_type = st.selectbox(
                 "Jenis pekerjaan",
-                [
-                    "Private",
-                    "Self-employed",
-                    "Govt_job",
-                    "children",
-                    "Never_worked",
-                ],
+                ["Private", "Self-employed", "Govt_job", "children", "Never_worked"],
             )
 
-            residence_type = st.selectbox(
-                "Tipe tempat tinggal",
-                ["Urban", "Rural"],
-            )
+            residence_type = st.selectbox("Tipe tempat tinggal", ["Urban", "Rural"])
 
         with col2:
 
-            hypertension_label = st.selectbox(
-                "Memiliki hipertensi?",
-                ["Tidak", "Ya"],
-            )
+            hypertension_label = st.selectbox("Memiliki hipertensi?", ["Tidak", "Ya"])
 
-            heart_disease_label = st.selectbox(
-                "Memiliki penyakit jantung?",
-                ["Tidak", "Ya"],
-            )
+            heart_disease_label = st.selectbox("Memiliki penyakit jantung?", ["Tidak", "Ya"])
 
             glucose = st.number_input(
                 "Average glucose level",
@@ -826,12 +652,7 @@ elif page == "Prediksi":
 
             smoking_status = st.selectbox(
                 "Status merokok",
-                [
-                    "Unknown",
-                    "never smoked",
-                    "formerly smoked",
-                    "smokes",
-                ],
+                ["Unknown", "never smoked", "formerly smoked", "smokes"],
             )
 
         st.markdown("---")
@@ -845,34 +666,19 @@ elif page == "Prediksi":
     if submitted:
 
         input_values = {
-
             "gender": gender,
             "age": float(age),
-
-            "hypertension": (
-                1 if hypertension_label == "Ya" else 0
-            ),
-
-            "heart_disease": (
-                1 if heart_disease_label == "Ya" else 0
-            ),
-
+            "hypertension": 1 if hypertension_label == "Ya" else 0,
+            "heart_disease": 1 if heart_disease_label == "Ya" else 0,
             "ever_married": ever_married,
             "work_type": work_type,
             "Residence_type": residence_type,
-
             "avg_glucose_level": float(glucose),
             "bmi": float(bmi),
-
             "smoking_status": smoking_status,
         }
 
-        input_df = pd.DataFrame(
-            [input_values],
-            columns=feature_order,
-        )
-
-        # CHECK TRAINING DATA RANGES
+        input_df = pd.DataFrame([input_values], columns=feature_order)
 
         out_of_range = []
 
@@ -881,18 +687,14 @@ elif page == "Prediksi":
             ("avg_glucose_level", glucose),
             ("bmi", bmi),
         ]:
-
             low, high = TRAINING_RANGES[feature]
 
             if value < low or value > high:
-
                 out_of_range.append(
-                    f"{feature} ({value:g}; rentang data "
-                    f"{low:g}–{high:g})"
+                    f"{feature} ({value:g}; rentang data {low:g}–{high:g})"
                 )
 
         if out_of_range:
-
             st.warning(
                 "Beberapa input berada di luar rentang dataset "
                 "pelatihan: "
@@ -902,85 +704,53 @@ elif page == "Prediksi":
 
         try:
 
-            score = float(
-                model.predict_proba(input_df)[0, 1]
-            )
+            score = float(model.predict_proba(input_df)[0, 1])
 
             predicted_class = int(score >= threshold)
 
             st.markdown("---")
 
-            st.markdown(
-                '<div class="section-title">'
-                'Hasil Klasifikasi Model</div>',
-                unsafe_allow_html=True,
-            )
+            section_title("Hasil Klasifikasi Model")
 
             if predicted_class == 1:
 
-                st.markdown(
+                md_html(
                     """
                     <div class="result-card result-positive">
-
-                        <div class="small-muted">
-                            HASIL KLASIFIKASI
-                        </div>
-
-                        <h2 style="color:#A94E35;margin:0.35rem 0;">
-                            Kelas Stroke (1)
-                        </h2>
-
+                        <div class="small-muted">HASIL KLASIFIKASI</div>
+                        <h2 style="color:#A94E35;margin:0.35rem 0;">Kelas Stroke (1)</h2>
                         <p style="color:#5E7075;margin-bottom:0;">
                             Berdasarkan threshold model, input ini
                             diklasifikasikan ke kelas 1.
                         </p>
-
                     </div>
-                    """,
-                    unsafe_allow_html=True,
+                    """
                 )
 
             else:
 
-                st.markdown(
+                md_html(
                     """
                     <div class="result-card result-negative">
-
-                        <div class="small-muted">
-                            HASIL KLASIFIKASI
-                        </div>
-
-                        <h2 style="color:#187A68;margin:0.35rem 0;">
-                            Kelas Tidak Stroke (0)
-                        </h2>
-
+                        <div class="small-muted">HASIL KLASIFIKASI</div>
+                        <h2 style="color:#187A68;margin:0.35rem 0;">Kelas Tidak Stroke (0)</h2>
                         <p style="color:#5E7075;margin-bottom:0;">
                             Berdasarkan threshold model, input ini
                             diklasifikasikan ke kelas 0.
                         </p>
-
                     </div>
-                    """,
-                    unsafe_allow_html=True,
+                    """
                 )
 
             score_col, threshold_col = st.columns(2)
 
             with score_col:
-                st.metric(
-                    "Skor keluaran model",
-                    f"{score:.4f}"
-                )
+                st.metric("Skor keluaran model", f"{score:.4f}")
 
             with threshold_col:
-                st.metric(
-                    "Threshold klasifikasi",
-                    f"{threshold:.4f}"
-                )
+                st.metric("Threshold klasifikasi", f"{threshold:.4f}")
 
-            st.progress(
-                min(max(score, 0.0), 1.0)
-            )
+            st.progress(min(max(score, 0.0), 1.0))
 
             st.caption(
                 "Skor di atas adalah keluaran predict_proba dari model. "
@@ -1018,10 +788,7 @@ elif page == "Tentang Model":
         "yang dilaporkan pada notebook proyek.",
     )
 
-    st.markdown(
-        '<div class="section-title">Konfigurasi Model</div>',
-        unsafe_allow_html=True,
-    )
+    section_title("Konfigurasi Model")
 
     info1, info2, info3 = st.columns(3)
 
@@ -1034,10 +801,7 @@ elif page == "Tentang Model":
     with info3:
         st.metric("Scikit-learn", sklearn.__version__)
 
-    st.markdown(
-        '<div class="section-title">Variabel yang Digunakan</div>',
-        unsafe_allow_html=True,
-    )
+    section_title("Variabel yang Digunakan")
 
     st.write(
         "Gender, age, hypertension, heart_disease, ever_married, "
@@ -1045,74 +809,44 @@ elif page == "Tentang Model":
         "dan smoking_status."
     )
 
-    st.markdown(
-        '<div class="section-title">Evaluasi pada Test Set</div>',
-        unsafe_allow_html=True,
-    )
+    section_title("Evaluasi pada Test Set")
 
     metrics_df = pd.DataFrame(
-        [
-            {"Metrik": key, "Nilai": value}
-            for key, value in TEST_METRICS.items()
-        ]
+        [{"Metrik": key, "Nilai": value} for key, value in TEST_METRICS.items()]
     )
 
-    st.dataframe(
-        metrics_df,
-        width="stretch",
-        hide_index=True,
-    )
+    st.dataframe(metrics_df, width="stretch", hide_index=True)
 
-    st.markdown(
-        '<div class="section-title">Confusion Matrix</div>',
-        unsafe_allow_html=True,
-    )
+    section_title("Confusion Matrix")
 
     cm_df = pd.DataFrame(
         [
-            [
-                CONFUSION_COUNTS["true_negative"],
-                CONFUSION_COUNTS["false_positive"],
-            ],
-            [
-                CONFUSION_COUNTS["false_negative"],
-                CONFUSION_COUNTS["true_positive"],
-            ],
+            [CONFUSION_COUNTS["true_negative"], CONFUSION_COUNTS["false_positive"]],
+            [CONFUSION_COUNTS["false_negative"], CONFUSION_COUNTS["true_positive"]],
         ],
-
-        index=[
-            "Aktual: Tidak Stroke",
-            "Aktual: Stroke",
-        ],
-
-        columns=[
-            "Prediksi: Tidak Stroke",
-            "Prediksi: Stroke",
-        ],
+        index=["Aktual: Tidak Stroke", "Aktual: Stroke"],
+        columns=["Prediksi: Tidak Stroke", "Prediksi: Stroke"],
     )
 
-    st.dataframe(
-        cm_df,
-        width="stretch",
-    )
+    st.dataframe(cm_df, width="stretch")
 
+    # Tanpa indentasi agar tidak dianggap code block
     st.markdown(
-        """
-        **Catatan interpretasi**
-
-        - Recall 78% berarti 39 dari 50 observasi berlabel stroke
-          pada test set berhasil diklasifikasikan sebagai kelas stroke.
-
-        - Precision 21,08% menunjukkan bahwa sebagian besar
-          prediksi kelas stroke pada test set merupakan false positive.
-
-        - Threshold dipilih dari data validasi dengan memaksimalkan
-          F1-Score, bukan dari data testing.
-
-        - Hasil evaluasi berasal dari satu pembagian train-test
-          pada dataset yang digunakan dalam proyek. Performa
-          pada populasi atau data lain dapat berbeda.
-        """
+        "\n".join(
+            [
+                "**Catatan interpretasi**",
+                "",
+                "- Recall 78% berarti 39 dari 50 observasi berlabel stroke "
+                "pada test set berhasil diklasifikasikan sebagai kelas stroke.",
+                "- Precision 21,08% menunjukkan bahwa sebagian besar "
+                "prediksi kelas stroke pada test set merupakan false positive.",
+                "- Threshold dipilih dari data validasi dengan memaksimalkan "
+                "F1-Score, bukan dari data testing.",
+                "- Hasil evaluasi berasal dari satu pembagian train-test "
+                "pada dataset yang digunakan dalam proyek. Performa "
+                "pada populasi atau data lain dapat berbeda.",
+            ]
+        )
     )
 
     st.warning(
@@ -1126,14 +860,11 @@ elif page == "Tentang Model":
 # FOOTER
 # ============================================================
 
-st.markdown(
+md_html(
     """
     <div class="footer-note">
-
         Stroke Prediction • Academic Machine Learning Project<br>
         Built with Streamlit and Scikit-learn.
-
     </div>
-    """,
-    unsafe_allow_html=True,
+    """
 )
